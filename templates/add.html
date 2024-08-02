@@ -1,0 +1,68 @@
+{% extends "base.html" %} 
+{% block title %}New Book{% endblock %}
+
+
+
+{% block content %}
+<a href="{{url_for('views.list')}}">
+    <img style="background-color: rgb(218, 226, 241); padding: 10px; width: 5vw; height: 10vh; transform: translate(0vw, 7vh);" src="/static/images/back.png">
+</a>
+
+<form method="POST" action = "./add" class = "form" enctype="multipart/form-data">
+<div class="container px-5 py-5">
+    <div class="row">
+      <div class="col-sm-6" style="height:500px;" >
+        <span class="align-middle px-5 py-5" style="width:400px" align="center">
+            <div class="upload">
+                <div class="picture">
+                    <img src = "static/images/book_cover.png" id = "image" style="width:400px; height:500px">
+                </div>
+                <label for = "file" class = "label">Upload Image</label>
+                <input style = "display: none;" type="file" id="file" accept = "/image" onchange="showPreview(event)" name = "file">
+            </div>
+        </span>
+      </div>
+      <div class="col-sm-6">
+        
+        <form class = "form" action = "./signup" method = "POST">
+            <br>
+            <h1 align="center">New Book</h1>
+            <br>
+            <div id = "big_gap" align="center">
+                <img src="static/images/book_stack.png">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Title" name = "name" required>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Author" name = "author" required>
+            </div>
+            <div class="form-group">
+                <input type="number" class="form-control" placeholder="Number of pages" name = "no_pages" required>
+            </div>
+            <div class="form-group">
+                <input type="number" class="form-control" placeholder="Current Page" name = "current_page" required>
+            </div>
+            <div class="form-group" align="right">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>        
+
+
+      </div>
+    </div>
+</div>
+</form>
+
+<script>
+    function showPreview(event) {
+         if (event.target.files.length > 0) {
+             var source = URL.createObjectURL(event.target.files[0]);
+             var preview = document.getElementById("image");
+             preview.src = source
+             preview.style.display = "block";
+         }
+    }
+</script>
+
+{% endblock %}

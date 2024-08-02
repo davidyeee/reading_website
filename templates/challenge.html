@@ -1,0 +1,45 @@
+{% extends "base.html" %} {% block title %}Challenges{% endblock %}
+{% block content %}
+
+<br>
+<br>
+<a href="{{url_for('views.home', index=0)}}">
+  <img style="background-color: rgb(218, 226, 241); padding: 10px; width: 5vw; height: 10vh; transform: translate(0vw, 7vh);" src="static/images/back.png">
+</a>
+
+
+<div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+
+  <ul class="list-group list-group-flush" style="background-color: rgb(218, 226, 241);">
+
+    {% for challenge in challenges %}
+    <form method='POST'>
+    <li class="list-group-item">
+
+        <div class="p-2">
+          <div class="d-flex justify-content-center">
+            
+            <div class="d-flex justify-content-between">
+              <div class="p-2" style="width: 200px">{{ challenge[0].name | truncate(22) }}</div>
+
+              {% if challenge[1] %}
+                    <button name="button" class="btn btn-primary" value="{{ challenge[0].id }}"  style="height:50px">Undo</button>
+                    <img src="{{ challenge[0].badge }}" style="width: 100px;height:100px"> 
+              {% else %}
+                    <button name="button" class="btn btn-danger" value="{{ challenge[0].id }}" style="height:50px">Complete</button>
+                    <img src="/static/images/incomplete_challenge.png" style="width: 100px;height:100px"> 
+              {% endif %}
+
+              <div style="width:20px"></div>
+            </div>
+        </div>
+    </li>
+    </form>
+    {% endfor %}
+
+  </ul>
+
+</div>
+
+{% endblock %}
+

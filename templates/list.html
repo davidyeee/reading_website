@@ -1,0 +1,238 @@
+{% extends "base.html" %} {% block title %}Classes{% endblock %}
+{% block content %}
+
+<style>
+  .all3 {
+        margin-top: 2vh;
+        border: 1px solid black;
+        border-radius: 15px;
+        background-color:rgb(40, 101, 245);
+        padding: 10px;
+        transform: translate(0, -10vh);
+    }
+    .input {
+        padding: 10px;
+        border: 1px solid black;
+        border-radius: 7px;
+        width: 35vw;
+        
+    }
+    .submit {
+        padding: 10px;
+        border: 1px solid black;
+        border-radius:7px;
+        background-color: rgb(65, 143, 253);
+        font-weight: bold;
+        width: 13vw;
+    }
+
+  
+</style>
+
+<div style="p-3">
+  <a href="{{url_for('views.home', index=0)}}">
+    <img style="background-color: rgb(218, 226, 241); padding: 10px; width: 5vw; height: 10vh;" src="static/images/back.png">
+  </a>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div id="div1" style="height: 500px;position:relative;">
+        <div id="div2" style="max-height:100%;overflow:auto;border:1px solid black;">
+         
+   
+      <h2 style="text-align:center;padding: 10px;">Reading</h2>
+      <div style="justify-content: center; align-items: center">
+        <ul class="list-group list-group-flush" style="background-color: rgb(218, 226, 241);">
+      
+          {% for book in reading %}
+          <form method='POST'>
+          <li class="list-group-item" style="background-color: rgb(218, 226, 241);">
+      
+              <div class="p-2">
+                <div class="d-flex justify-content-center">
+                  
+                  <div >
+                    <img src="{{ book.bookcover }}" style="width: 160px;height:200px"> 
+                    <div class="p-2" style="width: 200px">{{ book.name | truncate(50) }}</div>
+                        <div class="p-2">
+                          {% if book.status|string == "Status.reading" %}
+                          <button name="button" class="btn btn-primary" value="more{{ book.book_id }}">More</button>
+                          {% else %}
+                          <button name="button" class="btn btn-danger" value="more{{ book.book_id }}">More</button>
+                          {% endif %}
+                        </div>
+                      
+                    <div style="width:20px"></div>
+                  </div>
+              </div>
+          </li>
+          </form>
+        {% endfor %}
+      
+        </ul>
+      </div>
+
+      <h2 style="text-align:center;padding: 10px;">Waiting</h2>
+      <div style="justify-content: center; align-items: center">
+        <ul class="list-group list-group-flush" style="background-color: rgb(218, 226, 241);">
+      
+          {% for book in waiting %}
+          <form method='POST'>
+          <li class="list-group-item" style="background-color: rgb(218, 226, 241);">
+      
+              <div class="p-2">
+                <div class="d-flex justify-content-center">
+                  
+                  <div >
+                    <img src="{{ book.bookcover }}" style="width: 160px;height:200px"> 
+                    <div class="p-2" style="width: 200px">{{ book.name | truncate(50) }}</div>
+                        <div class="p-2">
+                          {% if book.status|string == "Status.reading" %}
+                          <button name="button" class="btn btn-primary" value="more{{ book.book_id }}">More</button>
+                          {% else %}
+                          <button name="button" class="btn btn-danger" value="more{{ book.book_id }}">More</button>
+                          {% endif %}
+                        </div>
+                      
+                    <div style="width:20px"></div>
+                  </div>
+              </div>
+          </li>
+          </form>
+        {% endfor %}
+      
+        </ul>
+      </div>
+      
+      
+        </div>
+      </div>
+      
+    </div>
+    <div class="col-4">
+      <div class="" style="">
+        <a href = "{{url_for('views.add')}}">
+            
+            <input type="image" src="/static/images/add.png" style="height: 100px; width:250px;"/>
+        </a>
+      </div>
+
+      <div id="div1" style="height: 500px;position:relative;">
+        <div id="div2" style="max-height:100%;overflow:auto;border:1px solid black;">
+         
+   
+          <h2 style="text-align:center;padding: 10px;">Finished</h2>
+          <div style="justify-content: center; align-items: center">
+            <ul class="list-group list-group-flush" style="background-color: rgb(218, 226, 241);">
+          
+              {% for book in finished %}
+              <form method='POST'>
+              <li class="list-group-item" style="background-color: rgb(218, 226, 241);">
+          
+                  <div class="p-2">
+                    <div class="d-flex justify-content-center">
+                      
+                      <div >
+                        <img src="{{ book.bookcover }}" style="width: 160px;height:200px"> 
+                        <div class="p-2" style="width: 200px">{{ book.name | truncate(50) }}</div>
+                            <div class="p-2">
+                              {% if book.status|string == "Status.reading" %}
+                              <button name="button" class="btn btn-primary" value="more{{ book.book_id }}">More</button>
+                              {% else %}
+                              <button name="button" class="btn btn-danger" value="more{{ book.book_id }}">More</button>
+                              {% endif %}
+                            </div>
+                          
+                        <div style="width:20px"></div>
+                      </div>
+                  </div>
+              </li>
+              </form>
+            {% endfor %}
+          
+            </ul>
+          </div>
+    
+          <h2 style="text-align:center;padding: 10px;">Skimmed</h2>
+          <div style="justify-content: center; align-items: center">
+            <ul class="list-group list-group-flush" style="background-color: rgb(218, 226, 241);">
+          
+              {% for book in skimmed %}
+              <form method='POST'>
+              <li class="list-group-item" style="background-color: rgb(218, 226, 241);">
+          
+                  <div class="p-2">
+                    <div class="d-flex justify-content-center">
+                      
+                      <div >
+                        <img src="{{ book.bookcover }}" style="width: 160px;height:200px"> 
+                        <div class="p-2" style="width: 200px">{{ book.name | truncate(50) }}</div>
+                            <div class="p-2">
+                              {% if book.status|string == "Status.reading" %}
+                              <button name="button" class="btn btn-primary" value="more{{ book.book_id }}">More</button>
+                              {% else %}
+                              <button name="button" class="btn btn-danger" value="more{{ book.book_id }}">More</button>
+                              {% endif %}
+                            </div>
+                          
+                        <div style="width:20px"></div>
+                      </div>
+                  </div>
+              </li>
+              </form>
+            {% endfor %}
+          
+            </ul>
+          </div>
+
+          <h2 style="text-align:center;padding: 10px;">DNF</h2>
+          <div style="justify-content: center; align-items: center">
+            <ul class="list-group list-group-flush" style="background-color: rgb(218, 226, 241);">
+          
+              {% for book in dnf %}
+              <form method='POST'>
+              <li class="list-group-item" style="background-color: rgb(218, 226, 241);">
+          
+                  <div class="p-2">
+                    <div class="d-flex justify-content-center">
+                      
+                      <div >
+                        <img src="{{ book.bookcover }}" style="width: 160px;height:200px"> 
+                        <div class="p-2" style="width: 200px">{{ book.name | truncate(50) }}</div>
+                            <div class="p-2">
+                              {% if book.status|string == "Status.reading" %}
+                              <button name="button" class="btn btn-primary" value="more{{ book.book_id }}">More</button>
+                              {% else %}
+                              <button name="button" class="btn btn-danger" value="more{{ book.book_id }}">More</button>
+                              {% endif %}
+                            </div>
+                          
+                        <div style="width:20px"></div>
+                      </div>
+                  </div>
+              </li>
+              </form>
+            {% endfor %}
+          
+            </ul>
+          </div>
+      
+        </div>
+      </div>
+      
+
+    </div>
+    <div class="all3">
+      <form method='POST'>
+        <input type = "text" placeholder = "Enter Book Name" name ="title" class = "input">
+        <button type="submit" name="button" class="submit" value="search" >Search</button>  
+      </form>
+        
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

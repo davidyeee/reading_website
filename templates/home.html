@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Book Page</title>
+</head>
+<style>
+    .background {
+        width: 88%;
+        transform: translate(7%, 0);
+        position: relative;
+    }
+
+    .management {
+        top: 10%;
+        left: 10%;
+        display: inline-block;
+        position: absolute;
+        width: 50vw;
+        cursor: pointer;
+    }
+    .all {
+        width: 15vw;
+        position: absolute;
+        z-index: 100;
+        margin-left: 47%;
+    }
+
+    .cover {
+        width: 15vw;
+        position: absolute;
+        z-index: 100;
+        height: 33vh;
+        transform: translate(2vw, -2vh);
+    }
+    .text {
+        position: absolute;
+        z-index: 100;
+        font-size: 2.4vw;
+        font-weight: bold;
+        transform: translate(18%, 150%);
+        text-decoration: none;
+        color: black;
+    }
+    .goals {
+        top: 40%;
+        left: 10%;
+        display: inline-block;
+        position: absolute;
+        width: 50vw;
+        cursor: pointer;
+    }
+    #more {
+        transform: translate(50%, 100%) !important;
+    }
+    .challenges {
+        top: 70%;
+        left: 10%;
+        display: inline-block;
+        position: absolute;
+        width: 50vw;
+        cursor: pointer;
+    }
+    .form {
+        width: 88%;
+        height: 100%;
+        z-index: 120;
+    }
+    .profile {
+        right: 14%;
+        top: 5%;
+        position: absolute;
+        background-color: rgb(140, 196, 245);
+        border-radius: 15px;
+        padding-left: 0.5vw;
+        padding-right: 0.5vw;
+        height: 9vh;
+        cursor: pointer;
+        width: 15vw;
+    }
+
+    .small_text {
+        transform: translate(0vw, -1.5vh);
+        text-align: left;
+    }
+    .title {
+        font-size: 1.3rem;
+        text-align: center !important;
+        font-weight: bold;
+    }
+    
+    .logout {
+        right: 35%;
+        top: 5%;
+        color: white;
+        background-color: red;
+        border-radius: 20px;
+        position: absolute;
+        width: 12vw;
+        height: 4vh;
+        padding: 1vw;
+    }
+
+    .reading {
+        right: 23%;
+        top: 15%;
+        position: absolute;
+        font-size: 2vw;
+        transform: translate(0, 2vh);
+    }
+
+    .cover {
+        top: 23%;
+        right: 32%;
+        width: 15vw;
+        position: absolute;
+        display: inline-block;
+    }
+
+    .right {
+        transform: translate(15vw,5vh);
+        font-size: 1.2vw;
+        font-weight: bold;
+    }
+
+    .status {
+        border-radius: 15px;
+        border: 2px solid green;
+        padding: 1vw;
+        transform: translate(1vw, 0vh);
+        cursor: pointer;
+        text-decoration: none;
+        transform: translate(0, -3vh);
+    }
+
+    #down {
+        top: 55% !important;
+    }
+    .badges {
+        display: inline-block;
+        transform: translate(0, 0.1vh);
+    }
+    .stats {
+        top: 66%;
+        right: 15%;
+        position: absolute;
+        font-size: 1.2vw;
+        font-weight: bold;
+    }
+    .badge {
+        width: 3vw;
+        top: 85%;
+    }
+    .push {
+        margin-bottom: 3vw;
+    }
+</style>
+<body>
+    <img src="/static/images/book_background.png" alt="I like bananas" class="background">
+
+    <form class = "form" method = "POST" action = "/home">
+        <a href = "{{url_for('views.list')}}">
+            <div class="management">
+                <p class = "text"> Book Management</p>
+                <img src="/static/images/a.png" alt="" class="all">
+            </div>
+        </a>
+    
+        <a href = "{{url_for('views.goal')}}">
+            <div class="goals">
+                <p class = "text" id = "more"> Goal Tracker </p>
+                <img src="/static/images/b.png" alt="" class="all">
+            </div>
+        </a>
+    
+        <a href = "/challenges">
+            <div class="challenges">
+                <p class = "text" id = "less"> Reading Challenges </p>
+                <img src="/static/images/c.png" alt="" class="all">
+            </div>
+        </a>
+
+        <a>
+            <div class="profile">
+                <p class = "small_text"> Email: {{student.email}} </p>
+                <p class = "small_text"> Name: {{student.name}} </p>
+            </div>
+        </a>
+        <form method = "POST">
+            <button type = "submit" name = "button" value = "logout">
+                <div class="logout">
+                    <p style = "font-size: 1.25rem; font-weight: bold; transform: translate(0, -2vh);"> Logout</p>
+                </div>
+            </button>
+        </form>
+
+        
+            <h3 class = "reading">Currently Reading</h3>
+            <div class="cover">
+                {% if books|length > 0 %}
+                <img src = "{{ books[index|int].bookcover }}" class = "cover">
+                <div class = "right">
+                    <p>Name: {{books[index|int].name}}</p>
+                    <p>Author: {{books[index|int].author}}</p>
+                    <p>Total Page Number: {{books[index|int].pages}}</p>
+                    <p class = "push">Current Page: {{books[index|int].currentpage}}</p>
+                    <form method = "POST">
+                        <button name = "button" value = "{{ (index|int) + 1 }}" class = "status">Next Book</button>
+                    </form>
+                </div>
+                {% else %}
+                <br>
+                <br>
+                    You are not currently reading any books.
+               
+                {% endif %}
+            </div>
+            <h3 class = "reading" id="down">Current Statistics</h3>
+            <div class="stats">
+                <p>Number of Books Read: {{num_read}}</p>
+                <p>Number of Books Planning to Read: {{num_plan}}</p>
+                
+                <p>Badges: </p>
+                <div class = "badges">
+                    {% for challenge in challenges %}
+                    {% if challenge[1] %}
+                    <img src="{{ challenge[0].badge }}" class = "badge"> 
+                    {% else %}
+                    <img src="/static/images/incomplete_challenge.png" class = "badge"> 
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        
+    </form>
+</body>
+</html>

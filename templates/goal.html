@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Goal Setting</title>
+    <link rel = "stylesheet" href = "//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css">
+</head>
+<style>
+    body { 
+        margin: 20px 50px; 
+        background-color: rgb(218, 226, 241);
+    }
+    h1 { font-size: 1.5em; }
+    p { margin: 0; }
+    input[type="checkbox"] { 
+    height: 20px; 
+    width: 20px; 
+    margin-right: 10px;
+    }	
+
+    .ready { font-size: 1.5em; }
+    .ui-progressbar-value { background: rgb(63, 80, 229); }
+    .progressbar-container {
+    position: relative;
+    width: 94vw; 
+    }
+
+    .progressbar-bar { 
+    height: 40px;
+    margin: 10px 0;
+    border-radius: 7px;
+    border: 1px solid black; 
+    transition: 4s;
+    }
+
+    .progressbar-label {
+    position: absolute;
+    top: 2px;
+    left: 45%;
+    z-index: 2;
+    transform: translate(0, 1vh);
+    }
+    .all {
+        align-items: center;
+    }
+    .goal_container {
+        font-size: 1.5em;
+        font-weight: bold;
+        background-color: blue;
+    }
+    .box {
+        margin-bottom: 3vh;
+        font-weight: bold;
+        max-width: 100vw;
+        font-size: 1.5em;
+    }
+
+    .all2 {
+        background-color: rgb(40, 101, 245);
+        border: 1px solid black;
+        border-radius: 7px;
+        padding: 2vw;
+        margin-top: 2vh;
+    }
+    .input {
+        padding: 10px;
+        border: 1px solid black;
+        border-radius: 7px;
+        width: 60vw;
+    }
+    .submit {
+        padding: 10px;
+        border: 1px solid black;
+        border-radius:7px;
+        background-color: rgb(65, 143, 253);
+        font-weight: bold;
+        width: 13vw;
+    }
+    .all3 {
+        margin-top: 2vh;
+        border: 1px solid black;
+        border-radius: 15px;
+        background-color:rgb(40, 101, 245);
+        padding: 10px;
+    }
+    .delete_bt {
+        background-color: red;
+        border: 1px solid black;
+        margin-left: 3vw;
+        border-radius: 15px;
+        padding: 10px;
+        width: 6vw;
+        font-weight: bold;
+    }
+    .box1 {
+        width: 80vw;
+        color: white;
+    }
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+      }
+      
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+      }
+      
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+      }
+      
+      input:checked + .slider {
+        background-color: #2196F3;
+      }
+      
+      input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+      }
+      
+      input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+      }
+      
+      /* Rounded sliders */
+      .slider.round {
+        border-radius: 34px;
+      }
+      
+      .slider.round:before {
+        border-radius: 50%;
+      }
+      .disp {
+        display: flex;
+      }
+</style>
+<body>
+
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %} {% for category, message in messages %} {% if category ==
+        'error' %}
+        <div class="alert alert-danger alter-dismissable fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% else %}
+        <div class="alert alert-success alter-dismissable fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+    {% endif %} {% endfor %} {% endif %} {% endwith %}
+    <a href="{{url_for('views.home', index=0)}}">
+        <img style="background-color: rgb(218, 226, 241); padding: 10px; width: 5vw; height: 10vh; transform: translate(0vw, 7vh);" src="static/images/back.png">
+    </a>
+    <h1 style = "text-align: center;">Progress bar:</h1>
+    <form action = "/goal" method = "POST" class = "all">
+        <div class="progressbar-container">
+            <div class="progressbar-bar"></div>
+            <div class="progressbar-label"></div>
+        </div>
+        
+        <div class = "ready"></div>
+        <div class="all2">
+            <p class = "goal_container">
+                {% for goal in goals %}
+                    <div class = "box disp">
+                            {% if goal.checked %}
+                            <button name="button" value="false{{goal.id}}" style="background-color: rgb(40, 101, 245);">
+                            <label class="switch" name="button" value="true{{goal.id}}">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                            </button>
+                            {% else %}
+                            <button name="button" value="false{{goal.id}}" style="background-color: rgb(40, 101, 245);">
+                            <label class="switch" name="button" value="false{{goal.id}}">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                              </label>
+                            </button>
+                            {% endif %}
+                            <br>
+                            <p style="padding-left: 20px" >{{ goal.goal }}</p>
+                            <button type="submit" style="background-color: red" class="delete_bt" value=del{{goal.id}} name="button">Delete</button>                           
+                        <br>
+                    </div>
+                {% endfor %}
+            </p>
+        </div>
+        <div class="all3">
+            <input type = "text" placeholder = "New Goal" name ="title" class = "input">
+            <button type="submit" name="button" class="submit" value="save" >Submit/Save</button>    
+        </div>
+        
+    </form>
+</body>
+<script src = "//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src = "//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<script>
+    $(document).ready(function() {
+  
+  // get box count
+  var count = 0;
+  var checked = 0;
+  function countBoxes() { 
+    count = $("input[type='checkbox']").length;
+    console.log(count);
+  }
+  countBoxes();
+  $(":checkbox").click(countBoxes);
+  // count checks
+  function countChecked() {
+    checked = $("input:checked").length;
+    
+    var percentage = parseInt(((checked / count) * 100),10);
+    $(".progressbar-bar").progressbar({
+            value: percentage
+        });
+    $(".progressbar-label").text(percentage + "%");
+  }
+  
+  countChecked();
+  $(":checkbox").click(countChecked);
+});
+
+</script>
+</html>
